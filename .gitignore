@@ -1,4 +1,6 @@
 *.pom
+*.po~
 .poeditor_apitoken
+LC_MESSAGE
 
 .idea
