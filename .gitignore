@@ -1,1 +1,4 @@
 *.pom
+.poeditor_apitoken
+
+.idea

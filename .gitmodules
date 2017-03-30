@@ -1,0 +1,4 @@
+[submodule "submodules/python-poeditor"]
+	path = submodules/python-poeditor
+	url = https://github.com/subdownloader/python-poeditor.git
+	branch = requests
