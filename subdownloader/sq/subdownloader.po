@@ -1416,18 +1416,3 @@ msgstr ""
 #, fuzzy, python-brace-format
 msgid "Uploader: {uploader}"
 msgstr "Ngarkuesi: %s"
-
-#~ msgid "Parsing video: %s"
-#~ msgstr "Video analiza: %s"
-
-#~ msgid "Parsing sub: %s"
-#~ msgstr "Analiza e nëntitujve: %s"
-
-#~ msgid "Finished hashing"
-#~ msgstr "Ashpërsia e përfunduar"
-
-#~ msgid "A new version of SubDownloader has been released."
-#~ msgstr "Nje version i ri i SubDownloader u publikua."
-
-#~ msgid "SubDownloader"
-#~ msgstr "SubDownloader"

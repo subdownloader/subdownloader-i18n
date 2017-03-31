@@ -1419,9 +1419,3 @@ msgstr ""
 #, fuzzy, python-brace-format
 msgid "Uploader: {uploader}"
 msgstr "Sendandi: %s"
-
-#~ msgid "Parsing video: %s"
-#~ msgstr "Greini video: %s"
-
-#~ msgid "Parsing sub: %s"
-#~ msgstr "Greini þýðingartexta: %s"

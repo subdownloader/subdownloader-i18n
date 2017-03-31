@@ -1430,34 +1430,3 @@ msgstr ""
 #, fuzzy, python-brace-format
 msgid "Uploader: {uploader}"
 msgstr "Pengunggah: %s"
-
-#~ msgid "SubDownloader %s"
-#~ msgstr "SubDownloader %s"
-
-#~ msgid "Help Us With 5 USD/EUR"
-#~ msgstr "Bantu Kami Dengan 5 USD/EUR"
-
-#~ msgid "Program Registered"
-#~ msgstr "Program Terdaftar"
-
-#~ msgid "Activate"
-#~ msgstr "Aktifkan"
-
-#~ msgid ""
-#~ "An error occured unziping %s:\n"
-#~ "Error: %s"
-#~ msgstr ""
-#~ "Error terjadi ketika meng-unzip %s:\n"
-#~ "Errror: %s"
-
-#~ msgid "A new version of SubDownloader has been released."
-#~ msgstr "Versi terbaru SubDownloader telah dirilis."
-
-#~ msgid "The program will expire in %d days."
-#~ msgstr "Program akan kadaluarsa dalam %d hari."
-
-#~ msgid "Activate Program"
-#~ msgstr "Aktifkan Program"
-
-#~ msgid "The program has expired after %d days of usage."
-#~ msgstr "Program telah kadaluarsa setelah dipakai %d hari."
