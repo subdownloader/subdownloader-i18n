@@ -1,4 +1,4 @@
-*.pom
+*.mo
 *.po~
 .poeditor_apitoken
 LC_MESSAGE
