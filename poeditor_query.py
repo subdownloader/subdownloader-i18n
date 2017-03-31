@@ -89,7 +89,7 @@ class Mapping:
     def updated(self):
         return self._server_updated
 
-    def sync_from_server(self, api, project_id, project_name, root_path, fixes):
+    def sync_from_server(self, api, project_id, project_name, root_path, fixes, download_path):
         log.debug("Mapping.sync_from_server(server={server}) ...".format(server=self.server()))
         if not self.server():
             log.error("Cannot sync from server if language is not on server")
@@ -99,6 +99,13 @@ class Mapping:
                                           file_type="po")
         log.debug("... Translations fetched!")
 
+        server_po_path = pathlib.Path(server_po_file)
+
+        if download_path:
+            download_path.mkdir(exist_ok=True)
+            copy_path = download_path / "poeditor_{server}.po".format(server=self.server())
+            copy_path.write_bytes(server_po_path.read_bytes())
+
         local = self._server_to_local(fixes=fixes)
         local_po_path = (root_path / local / project_name).with_suffix(".po")
         log.debug("Local po path:{local_po}".format(local_po=str(local_po_path)))
@@ -107,13 +114,13 @@ class Mapping:
             log.debug("Language {server} was not local yet.".format(server=self.server()))
             log.debug("Moving downloaded po file to local.")
             local_po_path.parent.mkdir(exist_ok=True)
-            pathlib.Path(server_po_file).rename(local_po_path)
+            pathlib.Path(server_po_path).rename(local_po_path)
             self.set_local(local=local)
         else:
             log.debug("Language {server} is already local.".format(server=self.server()))
             log.debug("Merging downloaded translations into local translations ...")
             # check_call(["msgmerge", "--previous", "-U", str(local_po_path), server_po_file])
-            check_call(["msgcat", server_po_file, str(local_po_path), "-o", str(local_po_path)])
+            check_call(["msgmerge", str(server_po_path), str(local_po_path), "-o", str(local_po_path)])
             log.debug("... merging done!")
         return True
 
@@ -279,13 +286,14 @@ class Mappings:
         print("\n".join(result_list))
         return nb_requested, fails
 
-    def sync_from_server(self, api, language_filter, sort_specs):
+    def sync_from_server(self, api, language_filter, sort_specs, download_path):
         nb_requested = 0
         fails = []
         for mapping in self.iter(language_filter=language_filter, sort_specs=sort_specs):
             nb_requested += 1
             result = mapping.sync_from_server(api=api, project_id=self._project_id, project_name=self._project_name,
-                                     root_path=self._language_root_path, fixes=self._fixes)
+                                              root_path=self._language_root_path, fixes=self._fixes,
+                                              download_path=download_path)
             if not result:
                 fails.append(mapping)
         return  nb_requested, fails
@@ -340,6 +348,8 @@ if __name__ == "__main__":
     parser.add_argument("--sort", "-s", dest="sort_order", default=None, choices=["l", "s", "n", "p", "t"], help="sort order")
     parser.add_argument("--reverse", "-r", dest="reverse_order", action="store_true", help="reverse order")
 
+    parser.add_argument("--folder", "-f", dest="folder", default=None, help="define folder where downloaded files will be stored")
+
     download_upload = parser.add_mutually_exclusive_group(required=True)
     download_upload.add_argument("--upload", dest="upload", action="store_true", help="upload translations to poeditor.com")
     download_upload.add_argument("--download", dest="download", action="store_true", help="download translations from poeditor.com")
@@ -371,6 +381,8 @@ if __name__ == "__main__":
     language_root_path = file_path / project_name
     local_languages_paths = [f for f in language_root_path .iterdir() if f.is_dir()]
 
+    folder_path = pathlib.Path(args.folder) if args.folder is not None else None
+
     poeditor_api = poeditor.POEditorAPI(api_token=api_token, block_upload=True)
 
     mappings = Mappings.from_project_name(api=poeditor_api, project_name=project_name,
@@ -381,7 +393,7 @@ if __name__ == "__main__":
 
     elif args.download:
         nb_requested, fails = mappings.sync_from_server(api=poeditor_api, language_filter=language_filter,
-                                                        sort_specs=sort_specs)
+                                                        sort_specs=sort_specs, download_path=folder_path)
 
     elif args.upload:
         nb_requested, fails = mappings.sync_to_server(api=poeditor_api, language_filter=language_filter,
